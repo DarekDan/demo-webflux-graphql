@@ -1,7 +1,3 @@
-Sure, I can create a sample `README.md` for a WebFlux GraphQL Demo project. Here's a basic structure for your README:
-
----
-
 # WebFlux GraphQL Demo Project
 
 ## Overview
