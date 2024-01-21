@@ -1,5 +1,10 @@
 type Query {
-    books: [Book]
+    books(filter: BookFilter): [Book]
+}
+
+input BookFilter {
+    titleContains: String
+    authorContains: String
 }
 
 type Book {
