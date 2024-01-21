@@ -34,8 +34,8 @@ public class DemoWebfluxGraphqlApplication {
                             .title())
                     .toModel();
             bookRepository.saveAll(Instancio.stream(bookModel)
-                    .limit(10)
-                    .collect(Collectors.toList()));
+                    .limit(100)
+                    .toList());
         };
     }
 

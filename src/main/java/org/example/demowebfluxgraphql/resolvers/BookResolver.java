@@ -4,6 +4,8 @@ import org.example.demowebfluxgraphql.entities.Book;
 import org.example.demowebfluxgraphql.repositories.BookRepository;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 @Controller
 public class BookResolver {
@@ -15,8 +17,9 @@ public class BookResolver {
     }
 
     @QueryMapping
-    Iterable<Book> books() {
-        return bookRepository.findAll();
+    public Flux<Book> books() {
+        return Flux.fromIterable(bookRepository.findAll())
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
 }

@@ -1,5 +1,8 @@
 package org.example.demowebfluxgraphql;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.example.demowebfluxgraphql.builders.GraphQLQueryBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
 class DemoWebfluxGraphqlApplicationTests {
 
     @LocalServerPort
@@ -19,6 +23,9 @@ class DemoWebfluxGraphqlApplicationTests {
 
     @Autowired
     ApplicationContext context;
+
+    @Autowired
+    GraphQLQueryBuilder builder;
 
     @BeforeEach
     void setUp(){
@@ -32,13 +39,14 @@ class DemoWebfluxGraphqlApplicationTests {
         // Test to ensure the application context loads successfully
     }
 
+    @SneakyThrows
     @Test
     void testGraphQLQueryFindAllBooks() {
-        String query = "{ books { id title author } }";
+        builder.query("books",  "id title author");
 
         webTestClient.post().uri("/graphql")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"query\":\"" + query + "\"}")
+                .bodyValue(builder.build())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
